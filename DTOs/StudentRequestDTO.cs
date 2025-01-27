@@ -12,6 +12,14 @@ namespace StudentManagementSystem.DTOs
         public string? EmailId { get; set; }
         public List<int>? ClassIds { get; set; }
     }
+    public class PaginationResponse
+    {
+        public int Index { get; set; }
+        public int PageSize { get; set; }
+        public int Count { get; set; }
+        public int PageNumber { get; set; }
+        public List<StudentResponseDTO>? StudentDetails { get; set; }
+    }
     public class StudentResponseDTO
     {
         public int Id { get; set; }

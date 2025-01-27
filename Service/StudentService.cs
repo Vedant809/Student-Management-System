@@ -1,6 +1,7 @@
 ﻿using StudentManagementSystem.DTOs;
 using StudentManagementSystem.Entity;
 using StudentManagementSystem.Interface;
+using StudentManagementSystem.Service;
 
 namespace StudentManagementSystem.Service
 {
@@ -39,11 +40,16 @@ namespace StudentManagementSystem.Service
             return result;
         }
 
-        public List<StudentResponseDTO> GetAll()
+        public PaginationResponse GetAll(PaginationRequestDTO request)
         {
+            PaginationResponse final = new PaginationResponse();
             List<StudentResponseDTO> response = new List<StudentResponseDTO>();
             var list = _repository.GetAll().ToList();
-            foreach(var item in list)
+            var searchingCondition = list
+                .WhereIf(!string.IsNullOrEmpty(request.Search), x => x.FirstName == request.Search);
+            var paginationContent = searchingCondition.Skip(request.Index * request.PageSize - request.PageSize).Take(request.PageSize);
+
+            foreach(var item in paginationContent)
             {
                 StudentResponseDTO res = new StudentResponseDTO();
                 res.Id = item.Id;
@@ -59,7 +65,13 @@ namespace StudentManagementSystem.Service
                 }).ToList();
                 response.Add(res);
             }
-            return response;
+
+            final.StudentDetails = response;
+            final.Index = request.Index;
+            final.PageSize = request.PageSize;
+            final.PageNumber = request.Index;
+            final.Count = paginationContent.Count();
+            return final;
         }
 
         public async Task<int> UpdateStudent(StudentRequestDTO request)

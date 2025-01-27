@@ -6,7 +6,7 @@ namespace StudentManagementSystem.Interface
     public interface IStudentService
     {
         Task<int> InsertStudentDetails(List<StudentRequestDTO> request);
-        List<StudentResponseDTO> GetAll();
+        PaginationResponse GetAll(PaginationRequestDTO request);
         Task<int> UpdateStudent(StudentRequestDTO request);
         StudentResponseDTO GetById(int Id);
     }
