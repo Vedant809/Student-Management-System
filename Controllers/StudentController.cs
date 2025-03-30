@@ -12,7 +12,7 @@ namespace StudentManagementSystem.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _service;
-        private const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
+        private const long MaxFileSize = 5 * 1024 * 1024;
         public StudentController(IStudentService service)
         {
             _service = service;
